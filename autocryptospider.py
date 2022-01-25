@@ -1,8 +1,13 @@
-import scrapy
-import time
-
+import time, scrapy
 
 class Autocryptospider(scrapy.Spider):
+    custom_settings = {
+        'DOWNLOADER_MIDDLEWARES' : {
+                'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+                'scrapy_fake_useragent.middleware.RandomUserAgentMiddleware': 400,
+            }, 'DOWNLOAD_DELAY' : 1
+    }
+
     name = "autoCryptoSpider"
     links = ['bombcrypto',
         'cryptocars',
@@ -20,7 +25,7 @@ class Autocryptospider(scrapy.Spider):
             'sigla' : response.css('.nameSymbol ::text').get(),
             'cotacao' : response.css('.priceValue span ::text').get()
             }
-        time.sleep(1)
+        
         
         
 

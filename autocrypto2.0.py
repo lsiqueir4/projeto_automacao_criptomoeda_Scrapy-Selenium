@@ -1,14 +1,15 @@
-import os, time, json
-from autocryptospider import Autocryptospider
+import os, time, json, pywhatkit, csv
 
 lista_dicionario = []
 
+horario_atual = time.ctime()
+
 #EXECUTA SCRAPY
-def auto_crypto(tempo=int):
+def auto_crypto():
     try:
         raw_string = r"scrapy runspider .\autocryptospider.py -o cotacao.json"
         os.system(raw_string)
-        time.sleep(tempo)
+        time.sleep(3)
         print('DADOS COLETADOS COM SUCESSO!')
     except:
         print('ERRO! WEB SCRAP NÃO EFETUADO!')
@@ -33,12 +34,26 @@ def pegar_json():
 
 #FORMATANDO AS COTAÇÕES PARA FORMATO DE TEXTO(PARA ENVIAR POR EMAIL, WPP ETC)
 def formatar_cotacao():
-    horario_atual = time.ctime()
-    resultado_final = f'[{horario_atual}] Cotações:'
+    resultado_final = f"[{horario_atual}] Cotações:"
     for dicionario in lista_dicionario:
-        resultado_final  += f"\n {dicionario['nome']}({dicionario['sigla']}) = {dicionario['cotacao']}"
+        resultado_final += f"\n {dicionario['nome']}({dicionario['sigla']}) = {dicionario['cotacao']}"
+    time.sleep(2)
     return resultado_final
+    
+
+cel = csv.reader(open('cel.csv'), delimiter = ',')
+
+def enviar_whats():
+    
+    try:
+        for num in cel:
+            pywhatkit.sendwhatmsg_instantly(f'+5511{num}', formatar_cotacao(), tab_close = True,)
+            print(f'Mensagem enviada para o número: {num} com sucesso!!')
+            time.sleep(3)
+        print('ENVIOS FINALIZADOS!')
+    except ValueError as v:
+        print(f"ERRO - MENSAGEM NAO ENVIADA!ERRO: {v}") 
   
-auto_crypto(4)
+auto_crypto()
 pegar_json()
-print(formatar_cotacao())
+enviar_whats()

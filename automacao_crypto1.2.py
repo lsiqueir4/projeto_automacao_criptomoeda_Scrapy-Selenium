@@ -33,6 +33,7 @@ for i in dict_cripto:
     for m,u in i.items():
         resultado = resultado + f'\n' + pegar_cotacao(m,u)
 
+
 nav.close()
 
 #ENVIANDO COTAÇÕES VIA WHATSAPP
@@ -42,8 +43,6 @@ print(resultado)
 
 try:
     for num in cel:
-
-        
         pywhatkit.sendwhatmsg_instantly(f'+5511{num}', resultado, tab_close = True,)
         print(f'Mensagem enviada para o número: {num} com sucesso!!')
         time.sleep(3)
