@@ -12,6 +12,4 @@ Este projeto utiliza as bibliotecas Selenium, Scrapy e Pywhatkit para envio auto
 </div><div>
 - Webdriver do Selenium
 </div><div>
-- Github;
-</div><div>
 <br>
